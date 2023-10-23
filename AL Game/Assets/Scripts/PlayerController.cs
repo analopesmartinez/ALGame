@@ -16,23 +16,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField][Range(0f, 90f)] private float verticalRotationCap = 80f;
 
     [Header("Jump")]
-    [SerializeField][Range(0f, 1f)] float jumpHeight = 0.5f;
-    [SerializeField][Range(0f, 2f)] float gravityFactor = 0.5f;
+    [SerializeField][Range(0f, 1f)] private float jumpHeight = 0.5f;
+    [SerializeField][Range(0f, 2f)] private float gravityFactor = 0.5f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] footstepAudio;
+    [SerializeField] private float strideInterval = 0.5f;
+    [SerializeField] private float sprintStrideInterval = 0.3f;
 
     private Vector2 moveVector;
     private Vector2 lookVector;
     private Vector3 velocity;
     private float verticalRotation;
+    private bool isMoving;
     private bool isSprinting;
+    private float timeBetweenSteps;
 
     private CharacterController characterController;
     private Camera playerCamera;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         // Get components
         characterController = GetComponent<CharacterController>();
         playerCamera = Camera.main;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -55,6 +64,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Look();
+        FootstepAudio();
     }
 
     private void OnMove(InputValue value)
@@ -92,8 +102,6 @@ public class PlayerController : MonoBehaviour
             // Sprint multiplier
             velocity.x *= moveSpeed * (isSprinting ? sprintSpeed : 1f);
             velocity.z *= moveSpeed * (isSprinting ? sprintSpeed : 1f);
-            //Slight gravitational force applied to keep player grounded
-            //velocity.y = -0.02f;
             // Move relative to the direction the player is facing
             velocityResult = velocity = transform.rotation * velocity;
         }
@@ -106,9 +114,11 @@ public class PlayerController : MonoBehaviour
             velocity += Physics.gravity * Time.deltaTime;
             velocityResult = velocity + airVelocity;
         }
-        Debug.Log("Result: " + velocityResult);
+
         // Apply movement to character controller
         characterController.Move(velocityResult);
+
+        isMoving = characterController.velocity.magnitude > 0;
     }
 
     private void Look()
@@ -119,6 +129,28 @@ public class PlayerController : MonoBehaviour
         verticalRotation -= lookVector.y * lookSensitivity;
         verticalRotation = Mathf.Clamp(verticalRotation, -verticalRotationCap, verticalRotationCap);
         playerCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+    }
+
+    private void FootstepAudio()
+    {
+        float currentStrideInterval = isSprinting ? sprintStrideInterval : strideInterval;
+
+        if(characterController.isGrounded && isMoving)
+        {
+            timeBetweenSteps += Time.deltaTime;
+
+            if(timeBetweenSteps >= currentStrideInterval)
+            {
+                Debug.Log(velocity.magnitude);
+                // Pick random footstep audio clip
+                int randomIndex = Random.Range(0, footstepAudio.Length - 1);
+                audioSource.clip = footstepAudio[randomIndex];
+                audioSource.volume = 0.1f * velocity.magnitude / (moveSpeed * 2);
+                audioSource.Play();
+                // Reset interval timer
+                timeBetweenSteps = 0f;
+            }
+        }
     }
 }
 
