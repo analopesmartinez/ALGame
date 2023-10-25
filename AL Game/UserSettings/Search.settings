@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 trackSelection = true
 refreshSearchWindowsInPlayMode = false
 fetchPreview = true
@@ -78,3 +79,6 @@ helperWidgetCurrentArea = "all"
 disabledIndexers = ""
 minIndexVariations = 2
 findProviderIndexHelper = true
+=======
+{}
+>>>>>>> Stashed changes
