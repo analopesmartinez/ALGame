@@ -31,6 +31,10 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private bool isSprinting;
     private float timeBetweenSteps;
+    private float originalFootstepVolume;
+    private bool wasGrounded;
+    private float jumpVelocity;
+    private bool isJumping;
 
     private CharacterController characterController;
     private Camera playerCamera;
@@ -52,8 +56,12 @@ public class PlayerController : MonoBehaviour
         // Initialising variables
         moveVector = Vector3.zero;
         isSprinting = false;
+        isJumping = false;
+        wasGrounded = true;
         Physics.gravity = new Vector3(0f, Physics.gravity.y * gravityFactor, 0f);
+        jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
         moveSpeedInAir *= moveSpeed;
+        originalFootstepVolume = audioSource.volume;
     }
 
     private void FixedUpdate()
@@ -69,8 +77,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnMove(InputValue value)
     {
-        moveVector = value.Get<Vector2>();
-        if (moveVector.x < 0.5f) isSprinting = false;
+        moveVector = value.Get<Vector2>().normalized;
+        if (moveVector.y < 0.5f) isSprinting = false;
     }
 
     private void OnLook(InputValue value)
@@ -80,15 +88,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnSprint()
     {
-        isSprinting = true;
+        if (moveVector.y > 0f)
+        {
+            isSprinting = true;
+        }
     }
 
     private void OnJump()
     {
         if (characterController.isGrounded)
         {
-            float jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
-            velocity.y = jumpVelocity;
+            isJumping = true;
+
+            playFootstepAudio();
         }
     }
 
@@ -97,8 +109,9 @@ public class PlayerController : MonoBehaviour
         Vector3 velocityResult;
         if (characterController.isGrounded)
         {
+            float yVelocity = isJumping ? jumpVelocity : -0.1f; 
             // Movement input conversion
-            velocity = new Vector3(moveVector.x, velocity.y, moveVector.y);
+            velocity = new Vector3(moveVector.x, yVelocity, moveVector.y);
             // Sprint multiplier
             velocity.x *= moveSpeed * (isSprinting ? sprintSpeed : 1f);
             velocity.z *= moveSpeed * (isSprinting ? sprintSpeed : 1f);
@@ -113,6 +126,13 @@ public class PlayerController : MonoBehaviour
             // Apply gravity
             velocity += Physics.gravity * Time.deltaTime;
             velocityResult = velocity + airVelocity;
+            // Ensure velocity magnitude doesnt increase
+            if(velocityResult.magnitude > velocity.magnitude)
+            {
+                velocityResult = velocity.magnitude * velocityResult.normalized;
+            }
+            // Reset isJumping
+            isJumping = false;
         }
 
         // Apply movement to character controller
@@ -133,24 +153,40 @@ public class PlayerController : MonoBehaviour
 
     private void FootstepAudio()
     {
-        float currentStrideInterval = isSprinting ? sprintStrideInterval : strideInterval;
+        // Play footstep when landing from a jump
+        bool isGrounded = characterController.isGrounded;
+        if (!wasGrounded && isGrounded)
+        {
+            playFootstepAudio();
+        }
+        wasGrounded = isGrounded;
 
-        if(characterController.isGrounded && isMoving)
+        // Check footstep interval and play footstep if exceeded
+        float currentStrideInterval = isSprinting ? sprintStrideInterval : strideInterval;
+        if(isGrounded && isMoving)
         {
             timeBetweenSteps += Time.deltaTime;
 
             if(timeBetweenSteps >= currentStrideInterval)
             {
-                Debug.Log(velocity.magnitude);
-                // Pick random footstep audio clip
-                int randomIndex = Random.Range(0, footstepAudio.Length - 1);
-                audioSource.clip = footstepAudio[randomIndex];
-                audioSource.volume = 0.1f * velocity.magnitude / (moveSpeed * 2);
-                audioSource.Play();
+                playFootstepAudio();
                 // Reset interval timer
                 timeBetweenSteps = 0f;
             }
+        } else
+        {
+            timeBetweenSteps = 0f;
         }
+    }
+
+    private void playFootstepAudio()
+    {
+        // Pick random footstep audio clip
+        int randomIndex = Random.Range(0, footstepAudio.Length - 1);
+        audioSource.clip = footstepAudio[randomIndex];
+        audioSource.volume = originalFootstepVolume * velocity.magnitude / 0.3f;
+        audioSource.Play();
+        //Debug.Log("velocity magnitude: " + velocity.magnitude + " || move speed: " + moveSpeed + " || sprint speed: " + sprintSpeed);
     }
 }
 

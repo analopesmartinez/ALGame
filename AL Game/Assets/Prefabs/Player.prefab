@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 8052934001880081149}
   - component: {fileID: 1560925871873831513}
   - component: {fileID: 4245787324243526106}
-  - component: {fileID: 3831044491420903796}
+  - component: {fileID: 5664364727870567011}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0.1
   sprintSpeed: 2
-  moveSpeedInAir: 0.25
+  moveSpeedInAir: 0.5
   lookSensitivity: 0.5
   verticalRotationCap: 80
   jumpHeight: 0.1
@@ -302,8 +302,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ba36b0d6743c4c745a3e010deed0432b, type: 3}
   - {fileID: 8300000, guid: d239c72563a24364194ed4493e4f1b38, type: 3}
   - {fileID: 8300000, guid: d4f5e4652eadaa54d8fbe41def5a0275, type: 3}
-  strideInterval: 0.5
-  sprintStrideInterval: 0.3
+  strideInterval: 0.6
+  sprintStrideInterval: 0.8
 --- !u!82 &4245787324243526106
 AudioSource:
   m_ObjectHideFlags: 0
@@ -313,10 +313,10 @@ AudioSource:
   m_GameObject: {fileID: 8138068441869845607}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2181612471606099049, guid: 71f22164e6ca177478beea9ef1e9ae59, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.0075
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -400,26 +400,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!164 &3831044491420903796
-AudioReverbFilter:
+--- !u!167 &5664364727870567011
+AudioReverbZone:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8138068441869845607}
   m_Enabled: 1
-  m_DryLevel: 0
-  m_Room: 0
-  m_RoomHF: 0
-  m_DecayTime: 1.5
-  m_DecayHFRatio: 0.2
-  m_ReflectionsLevel: -10000
-  m_ReverbLevel: 0
-  m_ReverbDelay: 0.04
-  m_Diffusion: 100
-  m_Density: 100
+  m_MinDistance: 1
+  m_MaxDistance: 1
+  m_ReverbPreset: 4
+  m_Room: -1000
+  m_RoomHF: -1200
+  m_DecayTime: 1.49
+  m_DecayHFRatio: 0.54
+  m_Reflections: -370
+  m_ReflectionsDelay: 0.007
+  m_Reverb: 1030
+  m_ReverbDelay: 0.011
   m_HFReference: 5000
-  m_RoomLF: 0
+  m_Diffusion: 100
+  m_Density: 60
   m_LFReference: 250
-  m_ReflectionsDelay: 0
-  m_ReverbPreset: 27
+  m_RoomLF: 0
