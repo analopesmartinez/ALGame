@@ -287,7 +287,7 @@ MonoBehaviour:
   lookSensitivity: 0.5
   verticalRotationCap: 80
   jumpHeight: 0.1
-  gravityFactor: 0.02
+  gravityForce: 0.02
   footstepAudio:
   - {fileID: 8300000, guid: a16a2ac130f6a25448c89d0586eab2c5, type: 3}
   - {fileID: 8300000, guid: 9f8e792fe315d4744b165ff31ffe48b5, type: 3}
@@ -304,6 +304,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d4f5e4652eadaa54d8fbe41def5a0275, type: 3}
   strideInterval: 0.6
   sprintStrideInterval: 0.8
+  canvasText: {fileID: 0}
 --- !u!82 &4245787324243526106
 AudioSource:
   m_ObjectHideFlags: 0
@@ -316,7 +317,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 2181612471606099049, guid: 71f22164e6ca177478beea9ef1e9ae59, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.0075
+  m_Volume: 0.02
   m_Pitch: 1
   Loop: 0
   Mute: 0

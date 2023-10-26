@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,12 +17,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField][Range(0f, 1f)] private float jumpHeight = 0.5f;
-    [SerializeField][Range(0f, 2f)] private float gravityFactor = 0.5f;
+    [SerializeField][Range(0f, 20f)] private float gravityForce = 4.9f;
 
     [Header("Audio")]
     [SerializeField] private AudioClip[] footstepAudio;
     [SerializeField] private float strideInterval = 0.5f;
     [SerializeField] private float sprintStrideInterval = 0.3f;
+
+    [Header("Game Over")]
+    [SerializeField] private TMP_Text canvasText; 
 
     private Vector2 moveVector;
     private Vector2 lookVector;
@@ -58,7 +61,7 @@ public class PlayerController : MonoBehaviour
         isSprinting = false;
         isJumping = false;
         wasGrounded = true;
-        Physics.gravity = new Vector3(0f, Physics.gravity.y * gravityFactor, 0f);
+        Physics.gravity = new Vector3(0f, -gravityForce, 0f);
         jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
         moveSpeedInAir *= moveSpeed;
         originalFootstepVolume = audioSource.volume;
@@ -101,6 +104,16 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
 
             playFootstepAudio();
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Collided with enemy");
+            canvasText.text = "GAME OVERRRRRR";
+            StartCoroutine(EndGameFunction());
         }
     }
 
@@ -187,6 +200,12 @@ public class PlayerController : MonoBehaviour
         audioSource.volume = originalFootstepVolume * velocity.magnitude / 0.3f;
         audioSource.Play();
         //Debug.Log("velocity magnitude: " + velocity.magnitude + " || move speed: " + moveSpeed + " || sprint speed: " + sprintSpeed);
+    }
+
+    private IEnumerator EndGameFunction()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
 
