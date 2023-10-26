@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-//using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,23 +16,39 @@ public class PlayerController : MonoBehaviour
     [SerializeField][Range(0f, 90f)] private float verticalRotationCap = 80f;
 
     [Header("Jump")]
-    [SerializeField][Range(0f, 1f)] float jumpHeight = 0.5f;
-    [SerializeField][Range(0f, 2f)] float gravityFactor = 0.5f;
+    [SerializeField][Range(0f, 1f)] private float jumpHeight = 0.5f;
+    [SerializeField][Range(0f, 20f)] private float gravityForce = 4.9f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] footstepAudio;
+    [SerializeField] private float strideInterval = 0.5f;
+    [SerializeField] private float sprintStrideInterval = 0.3f;
+
+    [Header("Game Over")]
+    [SerializeField] private TMP_Text canvasText; 
 
     private Vector2 moveVector;
     private Vector2 lookVector;
     private Vector3 velocity;
     private float verticalRotation;
+    private bool isMoving;
     private bool isSprinting;
+    private float timeBetweenSteps;
+    private float originalFootstepVolume;
+    private bool wasGrounded;
+    private float jumpVelocity;
+    private bool isJumping;
 
     private CharacterController characterController;
     private Camera playerCamera;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         // Get components
         characterController = GetComponent<CharacterController>();
         playerCamera = Camera.main;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -43,8 +59,12 @@ public class PlayerController : MonoBehaviour
         // Initialising variables
         moveVector = Vector3.zero;
         isSprinting = false;
-        Physics.gravity = new Vector3(0f, Physics.gravity.y * gravityFactor, 0f);
+        isJumping = false;
+        wasGrounded = true;
+        Physics.gravity = new Vector3(0f, -gravityForce, 0f);
+        jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
         moveSpeedInAir *= moveSpeed;
+        originalFootstepVolume = audioSource.volume;
     }
 
     private void FixedUpdate()
@@ -55,12 +75,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Look();
+        FootstepAudio();
     }
 
     private void OnMove(InputValue value)
     {
-        moveVector = value.Get<Vector2>();
-        if (moveVector.x < 0.5f) isSprinting = false;
+        moveVector = value.Get<Vector2>().normalized;
+        if (moveVector.y < 0.5f) isSprinting = false;
     }
 
     private void OnLook(InputValue value)
@@ -70,15 +91,29 @@ public class PlayerController : MonoBehaviour
 
     private void OnSprint()
     {
-        isSprinting = true;
+        if (moveVector.y > 0f)
+        {
+            isSprinting = true;
+        }
     }
 
     private void OnJump()
     {
         if (characterController.isGrounded)
         {
-            float jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
-            velocity.y = jumpVelocity;
+            isJumping = true;
+
+            playFootstepAudio();
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Collided with enemy");
+            canvasText.text = "GAME OVERRRRRR";
+            StartCoroutine(EndGameFunction());
         }
     }
 
@@ -87,13 +122,12 @@ public class PlayerController : MonoBehaviour
         Vector3 velocityResult;
         if (characterController.isGrounded)
         {
+            float yVelocity = isJumping ? jumpVelocity : -0.1f; 
             // Movement input conversion
-            velocity = new Vector3(moveVector.x, velocity.y, moveVector.y);
+            velocity = new Vector3(moveVector.x, yVelocity, moveVector.y);
             // Sprint multiplier
             velocity.x *= moveSpeed * (isSprinting ? sprintSpeed : 1f);
             velocity.z *= moveSpeed * (isSprinting ? sprintSpeed : 1f);
-            //Slight gravitational force applied to keep player grounded
-            //velocity.y = -0.02f;
             // Move relative to the direction the player is facing
             velocityResult = velocity = transform.rotation * velocity;
         }
@@ -105,10 +139,19 @@ public class PlayerController : MonoBehaviour
             // Apply gravity
             velocity += Physics.gravity * Time.deltaTime;
             velocityResult = velocity + airVelocity;
+            // Ensure velocity magnitude doesnt increase
+            if(velocityResult.magnitude > velocity.magnitude)
+            {
+                velocityResult = velocity.magnitude * velocityResult.normalized;
+            }
+            // Reset isJumping
+            isJumping = false;
         }
-        Debug.Log("Result: " + velocityResult);
+
         // Apply movement to character controller
         characterController.Move(velocityResult);
+
+        isMoving = characterController.velocity.magnitude > 0;
     }
 
     private void Look()
@@ -119,6 +162,50 @@ public class PlayerController : MonoBehaviour
         verticalRotation -= lookVector.y * lookSensitivity;
         verticalRotation = Mathf.Clamp(verticalRotation, -verticalRotationCap, verticalRotationCap);
         playerCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+    }
+
+    private void FootstepAudio()
+    {
+        // Play footstep when landing from a jump
+        bool isGrounded = characterController.isGrounded;
+        if (!wasGrounded && isGrounded)
+        {
+            playFootstepAudio();
+        }
+        wasGrounded = isGrounded;
+
+        // Check footstep interval and play footstep if exceeded
+        float currentStrideInterval = isSprinting ? sprintStrideInterval : strideInterval;
+        if(isGrounded && isMoving)
+        {
+            timeBetweenSteps += Time.deltaTime;
+
+            if(timeBetweenSteps >= currentStrideInterval)
+            {
+                playFootstepAudio();
+                // Reset interval timer
+                timeBetweenSteps = 0f;
+            }
+        } else
+        {
+            timeBetweenSteps = 0f;
+        }
+    }
+
+    private void playFootstepAudio()
+    {
+        // Pick random footstep audio clip
+        int randomIndex = Random.Range(0, footstepAudio.Length - 1);
+        audioSource.clip = footstepAudio[randomIndex];
+        audioSource.volume = originalFootstepVolume * velocity.magnitude / 0.3f;
+        audioSource.Play();
+        //Debug.Log("velocity magnitude: " + velocity.magnitude + " || move speed: " + moveSpeed + " || sprint speed: " + sprintSpeed);
+    }
+
+    private IEnumerator EndGameFunction()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
 

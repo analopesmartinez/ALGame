@@ -1,9 +1,11 @@
 fileFormatVersion: 2
-guid: a73109742c8d47ac822895a473300c29
+guid: 648064b5d1e3c8147ba9d10347e61dbc
+timeCreated: 1436650317
+licenseType: Pro
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - TheFont: {instanceID: 0}
+  - StyleSheet: {fileID: 11400000, guid: cab1ac28c8e6be24e995befe0c36d7c1, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
