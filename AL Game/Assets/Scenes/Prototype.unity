@@ -710,10 +710,6 @@ PrefabInstance:
       propertyPath: canvasText
       value: 
       objectReference: {fileID: 2023446860}
-    - target: {fileID: 1560925871873831513, guid: 3d862a21da4b27d4f9e2d089ca455073, type: 3}
-      propertyPath: gravityForce
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 8138068441869845605, guid: 3d862a21da4b27d4f9e2d089ca455073, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
