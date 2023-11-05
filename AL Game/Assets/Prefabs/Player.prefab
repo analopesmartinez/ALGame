@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1962833449}
   - component: {fileID: 1962833451}
   - component: {fileID: 1962833450}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8138068441560312534}
   - component: {fileID: 8138068441560312529}
   - component: {fileID: 8138068441560312528}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 4245787324243526106}
   - component: {fileID: 5664364727870567011}
   - component: {fileID: 1929609782256787330}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -289,6 +289,8 @@ MonoBehaviour:
   verticalRotationCap: 80
   jumpHeight: 0.1
   gravityForce: 0.2
+  totalLives: 3
+  livesText: {fileID: 0}
   footstepAudio:
   - {fileID: 8300000, guid: a16a2ac130f6a25448c89d0586eab2c5, type: 3}
   - {fileID: 8300000, guid: 9f8e792fe315d4744b165ff31ffe48b5, type: 3}
@@ -305,7 +307,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d4f5e4652eadaa54d8fbe41def5a0275, type: 3}
   strideInterval: 0.6
   sprintStrideInterval: 0.8
-  canvasText: {fileID: 0}
+  gameOverText: {fileID: 0}
 --- !u!82 &4245787324243526106
 AudioSource:
   m_ObjectHideFlags: 0
