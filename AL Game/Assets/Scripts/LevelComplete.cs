@@ -9,7 +9,7 @@ public class LevelComplete : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
+        Debug.Log("Triggered");
         if (other.gameObject.tag == "Player")
         {
             SceneManager.LoadScene("Level " + nextLevel);
