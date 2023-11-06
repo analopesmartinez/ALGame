@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:AL Game/Library/PackageCache/com.unity.inputsystem@1.7.0/Samples~/UnityRemote/CubeMaterial.mat.meta
 guid: c8809e96fa09da04aa2008b186fdf0fc
+========
+guid: 3220a19be9d4c6e4891e401eb38caa9e
+>>>>>>>> main:AL Game/Library/PackageCache/com.unity.testtools.codecoverage@1.2.4/Samples~/Tutorial/Asteroids/Visuals/Materials/fx_projectile.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

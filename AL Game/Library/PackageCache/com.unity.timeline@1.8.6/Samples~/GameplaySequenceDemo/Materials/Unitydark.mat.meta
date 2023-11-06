@@ -1,8 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:AL Game/Library/PackageCache/com.unity.timeline@1.8.6/Samples~/GameplaySequenceDemo/Materials/Unitydark.mat.meta
 guid: 5c0deec9bedfc4429aa89893ffaf94b1
+========
+guid: 5c4222eac5d064f888b070a9269a9150
+>>>>>>>> main:AL Game/Library/PackageCache/com.unity.inputsystem@1.7.0/Samples~/InputDeviceTester/InputDeviceTester.asset.meta
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 2100000
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

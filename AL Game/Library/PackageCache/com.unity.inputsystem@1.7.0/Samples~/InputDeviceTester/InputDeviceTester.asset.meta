@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:AL Game/Library/PackageCache/com.unity.inputsystem@1.7.0/Samples~/InputDeviceTester/InputDeviceTester.asset.meta
 guid: 5c4222eac5d064f888b070a9269a9150
+========
+guid: c8809e96fa09da04aa2008b186fdf0fc
+>>>>>>>> main:AL Game/Library/PackageCache/com.unity.inputsystem@1.7.0/Samples~/UnityRemote/CubeMaterial.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0
