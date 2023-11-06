@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
         jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
         moveSpeedInAir *= moveSpeed;
         originalFootstepVolume = audioSource.volume;
+        canvasText.text = "";
     }
 
     private void FixedUpdate()
@@ -205,7 +206,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator EndGameFunction()
     {
         yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("Level 0");
     }
 }
 
