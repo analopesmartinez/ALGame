@@ -1,5 +1,9 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/Oscar.unity
+=======
+- path: Assets/Scenes/Ana.unity
+>>>>>>> parent of bd1ce456 (Merge branch 'main' into Oscar)
   isLoaded: 1
   isActive: 1
   isSubScene: 0
