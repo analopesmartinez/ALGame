@@ -289,7 +289,7 @@ MonoBehaviour:
   verticalRotationCap: 80
   jumpHeight: 0.1
   gravityForce: 0.2
-  totalLives: 3
+  totalLives: 4
   livesText: {fileID: 0}
   footstepAudio:
   - {fileID: 8300000, guid: a16a2ac130f6a25448c89d0586eab2c5, type: 3}
