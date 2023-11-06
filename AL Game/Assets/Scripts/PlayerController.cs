@@ -19,23 +19,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField][Range(0f, 1f)] private float jumpHeight = 0.5f;
     [SerializeField][Range(0f, 20f)] private float gravityForce = 4.9f;
 
-    [Header("Health")] 
-    [SerializeField] private int totalLives = 3;
-    [SerializeField] private TMP_Text livesText;
-
     [Header("Audio")]
     [SerializeField] private AudioClip[] footstepAudio;
     [SerializeField] private float strideInterval = 0.5f;
     [SerializeField] private float sprintStrideInterval = 0.3f;
 
     [Header("Game Over")]
-    [SerializeField] private TMP_Text gameOverText; 
+    [SerializeField] private TMP_Text canvasText; 
 
     private Vector2 moveVector;
     private Vector2 lookVector;
     private Vector3 velocity;
-    private Vector3 startPosition;
-    private Quaternion startRotation;
     private float verticalRotation;
     private bool isMoving;
     private bool isSprinting;
@@ -44,7 +38,6 @@ public class PlayerController : MonoBehaviour
     private bool wasGrounded;
     private float jumpVelocity;
     private bool isJumping;
-    private int currentLives;
 
     private CharacterController characterController;
     private Camera playerCamera;
@@ -64,8 +57,6 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         // Initialising variables
-        startPosition = transform.position;
-        startRotation = transform.rotation;
         moveVector = Vector3.zero;
         isSprinting = false;
         isJumping = false;
@@ -74,9 +65,6 @@ public class PlayerController : MonoBehaviour
         jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
         moveSpeedInAir *= moveSpeed;
         originalFootstepVolume = audioSource.volume;
-        currentLives = totalLives;
-        livesText.text = "Lives: " + currentLives;
-        gameOverText.text = "";
     }
 
     private void FixedUpdate()
@@ -123,15 +111,9 @@ public class PlayerController : MonoBehaviour
     {
         if(hit.gameObject.tag == "Enemy")
         {
-            Debug.Log("Enemy hit");
-            transform.position = startPosition;
-            transform.rotation = startRotation;   
-            currentLives--;
-            livesText.text = "Lives: " + currentLives;
-            if (currentLives == 0)
-            {
-                StartCoroutine(EndGameFunction());
-            }
+            Debug.Log("Collided with enemy");
+            canvasText.text = "GAME OVERRRRRR";
+            StartCoroutine(EndGameFunction());
         }
     }
 
@@ -222,8 +204,6 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator EndGameFunction()
     {
-        currentLives = totalLives;
-        gameOverText.text = "GAME OVERRRR";
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

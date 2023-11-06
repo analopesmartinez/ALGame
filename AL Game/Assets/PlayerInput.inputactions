@@ -228,8 +228,19 @@
                 },
                 {
                     "name": "",
+                    "id": "2ad52bcc-2b40-4664-9455-6279898be41b",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c23016f0-d2b4-4c05-8ab6-03fee6445ec6",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
