@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   pickupIdx: 0
 --- !u!1 &8208552525998261916
 GameObject:
