@@ -8,11 +8,16 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Walls
   - Water
   - UI
+<<<<<<< HEAD
   - 
   - 
+=======
+  - Pickups
+  - Player
+>>>>>>> origin/Bing
   - 
   - 
   - 
