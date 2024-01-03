@@ -1,3 +1,4 @@
+//using NUnit.Framework;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -231,5 +232,10 @@ public class EnemyAI : MonoBehaviour
 			Gizmos.DrawLine(transform.position + previousDirection * rayRange, transform.position + direction);
 			previousDirection = direction.normalized;
 		}
+	}
+
+	public void SetPatrolPoints(Transform[] newPatrolPoints)
+	{
+		patrolPoints = newPatrolPoints;
 	}
 }

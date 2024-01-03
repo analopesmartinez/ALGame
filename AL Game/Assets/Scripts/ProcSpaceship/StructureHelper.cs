@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class StructureHelper
 {
-    public static List<Node> TraverseGraphToExtractLowestLeaves(RoomNode parentNode)
+    public static List<Node> TraverseGraphToExtractLowestLeaves(Node parentNode)
     {
         Queue<Node> nodesToCheck = new Queue<Node>();
         List<Node> listToReturn = new List<Node>();
@@ -56,4 +56,19 @@ public class StructureHelper
             Random.Range((int)(minX + (maxX - minX) * pointModifier), maxX),
             Random.Range((int)(minY + (maxY - minY) * pointModifier), maxY));
     }
+
+    public static Vector2Int CalculateMiddlePoint(Vector2Int vector1, Vector2Int vector2)
+    {
+        Vector2 sum = vector1 + vector2;
+        Vector2 temptVector = sum / 2;
+        return new Vector2Int((int)temptVector.x, (int)temptVector.y);
+    }
+}
+
+public enum RelativePosition
+{
+    Up,
+    Down,
+    Left,
+    Right
 }
