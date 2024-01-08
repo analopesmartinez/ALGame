@@ -12,7 +12,10 @@ public class CorridorNode : Node
     private int corridorWidth;
     private int modifierDistanceFromWall = 1;
 
-    public CorridorNode(Node node1, Node node2, int corridorWidth) : base(null)
+    public float Width { get { return (TopRightCorner.x - BottomLeftCorner.x); } }
+    public float Length { get { return (TopRightCorner.y - BottomLeftCorner.y); } }
+
+    public CorridorNode(Node node1, Node node2, int corridorWidth) : base(null, false)
     {
         this.structure1 = node1;
         this.structure2 = node2;
@@ -56,7 +59,7 @@ public class CorridorNode : Node
         }
         else
         {
-            int maxX = sortedLeftStructures[0].TopRightCorner.x;
+            float maxX = sortedLeftStructures[0].TopRightCorner.x;
             sortedLeftStructures = sortedLeftStructures.Where(children => Math.Abs(maxX - children.TopRightCorner.x) < 10).ToList();
             int index = UnityEngine.Random.Range(0, sortedLeftStructures.Count);
             leftStructure = sortedLeftStructures[index];
@@ -78,45 +81,45 @@ public class CorridorNode : Node
         {
             rightStructure = possibleRightStructureNeighbours[0];
         }
-        int y = GetValidYForNeighbourLeftRight(leftStructure.TopRightCorner, leftStructure.BottomRightCorner, rightStructure.TopLeftCorner, rightStructure.BottomLeftCorner);
+        float y = GetValidYForNeighbourLeftRight(leftStructure.TopRightCorner, leftStructure.BottomRightCorner, rightStructure.TopLeftCorner, rightStructure.BottomLeftCorner);
         while (y == -1 && sortedLeftStructures.Count > 1)
         {
             sortedLeftStructures = sortedLeftStructures.Where(child => child.TopLeftCorner.y != leftStructure.TopLeftCorner.y).ToList();
             leftStructure = sortedLeftStructures[0];
             y = GetValidYForNeighbourLeftRight(leftStructure.TopRightCorner, leftStructure.BottomRightCorner, rightStructure.TopLeftCorner, rightStructure.BottomLeftCorner);
         }
-        BottomLeftCorner = new Vector2Int(leftStructure.BottomRightCorner.x, y);
-        TopRightCorner = new Vector2Int(rightStructure.TopLeftCorner.x, y + this.corridorWidth);
+        BottomLeftCorner = new Vector2(leftStructure.BottomRightCorner.x, y);
+        TopRightCorner = new Vector2(rightStructure.TopLeftCorner.x, y + this.corridorWidth);
     }
 
-    private int GetValidYForNeighbourLeftRight(Vector2Int leftNodeUp, Vector2Int leftNodeDown, Vector2Int rightNodeUp, Vector2Int rightNodeDown)
+    private float GetValidYForNeighbourLeftRight(Vector2 leftNodeUp, Vector2 leftNodeDown, Vector2 rightNodeUp, Vector2 rightNodeDown)
     {
         if (rightNodeUp.y >= leftNodeUp.y && rightNodeDown.y <= leftNodeDown.y)
         {
             return StructureHelper.CalculateMiddlePoint(
-                leftNodeDown + new Vector2Int(0, modifierDistanceFromWall),
-                leftNodeUp - new Vector2Int(0, modifierDistanceFromWall + this.corridorWidth)
+                leftNodeDown + new Vector2(0, modifierDistanceFromWall),
+                leftNodeUp - new Vector2(0, modifierDistanceFromWall + this.corridorWidth)
                 ).y;
         }
         if (rightNodeUp.y <= leftNodeUp.y && leftNodeDown.y <= rightNodeDown.y)
         {
             return StructureHelper.CalculateMiddlePoint(
-                rightNodeDown + new Vector2Int(0, modifierDistanceFromWall),
-                rightNodeUp - new Vector2Int(0, modifierDistanceFromWall + this.corridorWidth)
+                rightNodeDown + new Vector2(0, modifierDistanceFromWall),
+                rightNodeUp - new Vector2(0, modifierDistanceFromWall + this.corridorWidth)
                 ).y;
         }
         if (leftNodeUp.y >= rightNodeDown.y && leftNodeUp.y <= rightNodeUp.y)
         {
             return StructureHelper.CalculateMiddlePoint(
-                rightNodeDown + new Vector2Int(0, modifierDistanceFromWall),
-                leftNodeUp - new Vector2Int(0, modifierDistanceFromWall + this.corridorWidth)
+                rightNodeDown + new Vector2(0, modifierDistanceFromWall),
+                leftNodeUp - new Vector2(0, modifierDistanceFromWall + this.corridorWidth)
                 ).y;
         }
         if (leftNodeDown.y >= rightNodeDown.y && leftNodeDown.y <= rightNodeUp.y)
         {
             return StructureHelper.CalculateMiddlePoint(
-                leftNodeDown + new Vector2Int(0, modifierDistanceFromWall),
-                rightNodeUp - new Vector2Int(0, modifierDistanceFromWall + this.corridorWidth)
+                leftNodeDown + new Vector2(0, modifierDistanceFromWall),
+                rightNodeUp - new Vector2(0, modifierDistanceFromWall + this.corridorWidth)
                 ).y;
         }
         return -1;
@@ -137,7 +140,7 @@ public class CorridorNode : Node
         }
         else
         {
-            int maxY = sortedBottomStructure[0].TopLeftCorner.y;
+            float maxY = sortedBottomStructure[0].TopLeftCorner.y;
             sortedBottomStructure = sortedBottomStructure.Where(child => Mathf.Abs(maxY - child.TopLeftCorner.y) < 10).ToList();
             int index = UnityEngine.Random.Range(0, sortedBottomStructure.Count);
             bottomStructure = sortedBottomStructure[index];
@@ -158,7 +161,7 @@ public class CorridorNode : Node
         {
             topStructure = possibleNeighboursInTopStructure[0];
         }
-        int x = GetValidXForNeighbourUpDown(
+        float x = GetValidXForNeighbourUpDown(
                 bottomStructure.TopLeftCorner,
                 bottomStructure.TopRightCorner,
                 topStructure.BottomLeftCorner,
@@ -173,40 +176,40 @@ public class CorridorNode : Node
                 topStructure.BottomLeftCorner,
                 topStructure.BottomRightCorner);
         }
-        BottomLeftCorner = new Vector2Int(x, bottomStructure.TopLeftCorner.y);
-        TopRightCorner = new Vector2Int(x + this.corridorWidth, topStructure.BottomLeftCorner.y);
+        BottomLeftCorner = new Vector2(x, bottomStructure.TopLeftCorner.y);
+        TopRightCorner = new Vector2(x + this.corridorWidth, topStructure.BottomLeftCorner.y);
     }
 
-    private int GetValidXForNeighbourUpDown(Vector2Int bottomNodeLeft,
-        Vector2Int bottomNodeRight, Vector2Int topNodeLeft, Vector2Int topNodeRight)
+    private float GetValidXForNeighbourUpDown(Vector2 bottomNodeLeft,
+        Vector2 bottomNodeRight, Vector2 topNodeLeft, Vector2 topNodeRight)
     {
         if (topNodeLeft.x < bottomNodeLeft.x && bottomNodeRight.x < topNodeRight.x)
         {
             return StructureHelper.CalculateMiddlePoint(
-                bottomNodeLeft + new Vector2Int(modifierDistanceFromWall, 0),
-                bottomNodeRight - new Vector2Int(this.corridorWidth + modifierDistanceFromWall, 0)
+                bottomNodeLeft + new Vector2(modifierDistanceFromWall, 0),
+                bottomNodeRight - new Vector2(this.corridorWidth + modifierDistanceFromWall, 0)
                 ).x;
         }
         if (topNodeLeft.x >= bottomNodeLeft.x && bottomNodeRight.x >= topNodeRight.x)
         {
             return StructureHelper.CalculateMiddlePoint(
-                topNodeLeft + new Vector2Int(modifierDistanceFromWall, 0),
-                topNodeRight - new Vector2Int(this.corridorWidth + modifierDistanceFromWall, 0)
+                topNodeLeft + new Vector2(modifierDistanceFromWall, 0),
+                topNodeRight - new Vector2(this.corridorWidth + modifierDistanceFromWall, 0)
                 ).x;
         }
         if (bottomNodeLeft.x >= (topNodeLeft.x) && bottomNodeLeft.x <= topNodeRight.x)
         {
             return StructureHelper.CalculateMiddlePoint(
-                bottomNodeLeft + new Vector2Int(modifierDistanceFromWall, 0),
-                topNodeRight - new Vector2Int(this.corridorWidth + modifierDistanceFromWall, 0)
+                bottomNodeLeft + new Vector2(modifierDistanceFromWall, 0),
+                topNodeRight - new Vector2(this.corridorWidth + modifierDistanceFromWall, 0)
 
                 ).x;
         }
         if (bottomNodeRight.x <= topNodeRight.x && bottomNodeRight.x >= topNodeLeft.x)
         {
             return StructureHelper.CalculateMiddlePoint(
-                topNodeLeft + new Vector2Int(modifierDistanceFromWall, 0),
-                bottomNodeRight - new Vector2Int(this.corridorWidth + modifierDistanceFromWall, 0)
+                topNodeLeft + new Vector2(modifierDistanceFromWall, 0),
+                bottomNodeRight - new Vector2(this.corridorWidth + modifierDistanceFromWall, 0)
 
                 ).x;
         }

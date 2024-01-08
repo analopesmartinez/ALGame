@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Black
+  m_Name: LightStripMat
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -67,7 +67,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
@@ -79,6 +79,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
-    - _EmissionColor: {r: 0.000038619382, g: 0.000038619382, b: 0.000038619382, a: 1}
+    - _Color: {r: 0.823262, g: 1, b: 0.2971698, a: 1}
+    - _EmissionColor: {r: 0.08156817, g: 0.3679245, b: 0.08156817, a: 1}
   m_BuildTextureStacks: []

@@ -35,33 +35,33 @@ public class StructureHelper
         return listToReturn;
     }
 
-    public static Vector2Int GenerateBottomLeftCornerBetween(Vector2Int leftBoundary, Vector2Int rightBoundary, float pointModifier, int offset)
+    public static Vector2 GenerateBottomLeftCornerBetween(Vector2 leftBoundary, Vector2 rightBoundary, float pointModifier, float offset)
     {
-        int minX = leftBoundary.x + offset;
-        int maxX = rightBoundary.x - offset;
-        int minY = leftBoundary.y + offset;
-        int maxY = rightBoundary.y - offset;
-        return new Vector2Int(
-            Random.Range(minX, (int)(minX + (maxX - minX) * pointModifier)),
-            Random.Range(minY, (int)(minY + (maxY - minY) * pointModifier)));
+        float minX = leftBoundary.x + offset;
+        float maxX = rightBoundary.x - offset;
+        float minY = leftBoundary.y + offset;
+        float maxY = rightBoundary.y - offset;
+        return new Vector2(
+            Random.Range(minX, (minX + (maxX - minX) * pointModifier)),
+            Random.Range(minY, (minY + (maxY - minY) * pointModifier)));
     }
 
-    public static Vector2Int GenerateTopRightCornerBetween(Vector2Int leftBoundary, Vector2Int rightBoundary, float pointModifier, int offset)
+    public static Vector2 GenerateTopRightCornerBetween(Vector2 leftBoundary, Vector2 rightBoundary, float pointModifier, int offset)
     {
-        int minX = leftBoundary.x + offset;
-        int maxX = rightBoundary.x - offset;
-        int minY = leftBoundary.y + offset;
-        int maxY = rightBoundary.y - offset;
-        return new Vector2Int(
+        float minX = leftBoundary.x + offset;
+        float maxX = rightBoundary.x - offset;
+        float minY = leftBoundary.y + offset;
+        float maxY = rightBoundary.y - offset;
+        return new Vector2(
             Random.Range((int)(minX + (maxX - minX) * pointModifier), maxX),
             Random.Range((int)(minY + (maxY - minY) * pointModifier), maxY));
     }
 
-    public static Vector2Int CalculateMiddlePoint(Vector2Int vector1, Vector2Int vector2)
+    public static Vector2 CalculateMiddlePoint(Vector2 vector1, Vector2 vector2)
     {
         Vector2 sum = vector1 + vector2;
         Vector2 temptVector = sum / 2;
-        return new Vector2Int((int)temptVector.x, (int)temptVector.y);
+        return new Vector2((int)temptVector.x, (int)temptVector.y);
     }
 }
 

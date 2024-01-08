@@ -21,11 +21,15 @@ public class ShipCreator : MonoBehaviour
     [SerializeField] NavMeshSurface _navMeshSurface;
     [SerializeField] GameObject playerPrefab, enemyPrefab;
     [SerializeField] int enemyCount;
+    [SerializeField] GameObject[] premadeRooms;
+    [SerializeField] int premadeRoomOffset;
 
     private List<Vector3> possibleDoorVerticalPositions;
     private List<Vector3> possibleDoorHorizontalPositions;
     private List<Vector4> wallVerticalPositions;
     private List<Vector4> wallHorizontalPositions;
+
+    private List<RoomNode> premadeRoomNodes;
 
     private Material material;
     private GameObject player;
@@ -38,8 +42,9 @@ public class ShipCreator : MonoBehaviour
     public void CreateShip()
     {
         DestroyShip();
+        premadeRoomNodes = new List<RoomNode>();
         ShipGenerator generator = new ShipGenerator(shipWidth, shipLength);
-        List<Node> listOfRooms = generator.CalculateShip(maxIterations, roomWidthMin, roomLengthMin, roomBottomCornerModifier, roomTopCornerModifier, roomOffset, corridorWidth);
+        List<Node> listOfRooms = generator.CalculateShip(maxIterations, roomWidthMin, roomLengthMin, roomBottomCornerModifier, roomTopCornerModifier, roomOffset, corridorWidth, premadeRooms, premadeRoomOffset, out premadeRoomNodes);
 
         GameObject wallParent = new GameObject("WallParent");
         wallParent.transform.parent = transform;
@@ -67,9 +72,21 @@ public class ShipCreator : MonoBehaviour
         }
         CreateWalls(wallParent);
         AddDoors(wallParent);
+        CreatePremadeRooms(wallParent);
         _navMeshSurface.BuildNavMesh();
         CreatePlayer(listOfRooms);
         CreateEnemy(listOfRooms, enemyCount, wallParent);
+    }
+
+    private void CreatePremadeRooms(GameObject parent)
+    {
+        int i = 0;
+        foreach (RoomNode room in premadeRoomNodes)
+        {
+            Vector3 location = new Vector3((room.BottomLeftCorner.x + room.TopRightCorner.x) / 2.0f, 0, (room.BottomLeftCorner.y + room.TopRightCorner.y) / 2.0f);
+            Instantiate(premadeRooms[i], location, Quaternion.identity, parent.transform);
+            i++;
+        }
     }
 
     private void CreateEnemy(List<Node> listOfRooms, int count, GameObject parent)
@@ -99,9 +116,9 @@ public class ShipCreator : MonoBehaviour
         player = Instantiate(playerPrefab, new Vector3(spawnLocation.x, 1.0f, spawnLocation.y), Quaternion.identity);
     }
 
-    private void AddLight(Vector2Int point1, Vector2Int point2)
+    private void AddLight(Vector2 point1, Vector2 point2)
     {
-        Vector2 spawnLocation = (Vector2)(point1 + point2) / 2.0f;
+        Vector2 spawnLocation = (point1 + point2) / 2.0f;
         Instantiate(lightPrefab, new Vector3(spawnLocation.x, shipHeight, spawnLocation.y), Quaternion.Euler(90f, 0f, 0f), transform);
     }
 
@@ -139,7 +156,6 @@ public class ShipCreator : MonoBehaviour
                     lesserCount++;
                 }
             }
-            Debug.Log(greaterCount + "||" + lesserCount);
             if ((greaterCount == 1 && lesserCount == 1) || (greaterCount == 0 && lesserCount == 0))
             {
                 filteredList.Add(currentPosition);

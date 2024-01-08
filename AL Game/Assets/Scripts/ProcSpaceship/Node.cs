@@ -6,16 +6,17 @@ public abstract class Node
     private List<Node> _children;
     public List<Node> Children { get { return _children; } }
     public bool Visited { get; set; }
-    public Vector2Int BottomLeftCorner { get; set; }
-    public Vector2Int BottomRightCorner { get; set; }
-    public Vector2Int TopLeftCorner { get; set; }
-    public Vector2Int TopRightCorner { get; set; }
+    public Vector2 BottomLeftCorner { get; set; }
+    public Vector2 BottomRightCorner { get; set; }
+    public Vector2 TopLeftCorner { get; set; }
+    public Vector2 TopRightCorner { get; set; }
 
     public Node Parent { get; set; }
+    public bool isIndivisible { get; private set; }
 
     public int TreeLayerIndex { get; set; }
 
-    public Node(Node parentNode)
+    public Node(Node parentNode, bool isIndivisible)
     {
         _children = new List<Node>();
         this.Parent = parentNode;
@@ -23,6 +24,8 @@ public abstract class Node
         {
             parentNode.AddChild(this);
         }
+
+        this.isIndivisible = isIndivisible;
     }
 
     public void AddChild(Node node)
