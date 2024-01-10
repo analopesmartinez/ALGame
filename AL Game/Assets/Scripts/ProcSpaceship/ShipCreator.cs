@@ -36,7 +36,7 @@ public class ShipCreator : MonoBehaviour
 
     void Start()
     {
-        //CreateShip();
+        CreateShip();
     }
 
     public void CreateShip()
@@ -74,7 +74,7 @@ public class ShipCreator : MonoBehaviour
         AddDoors(wallParent);
         CreatePremadeRooms(wallParent);
         _navMeshSurface.BuildNavMesh();
-        CreatePlayer(listOfRooms);
+        //CreatePlayer(listOfRooms);
         CreateEnemy(listOfRooms, enemyCount, wallParent);
     }
 

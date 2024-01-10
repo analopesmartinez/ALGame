@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5471470570201312451}
   - component: {fileID: 8692376068474808011}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ShipRoomLight
-  m_TagString: Untagged
+  m_TagString: Lights
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228987783971591851}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
