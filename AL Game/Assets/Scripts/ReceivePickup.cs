@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ReceivePickup : MonoBehaviour
@@ -9,14 +10,15 @@ public class ReceivePickup : MonoBehaviour
 
     [Header("Related to Pickup Function (leave blank if not applicable)")]
     [SerializeField] private Material[] emissiveMaterials;
+    [SerializeField] private GameObject FX;
+    [SerializeField] private ActivateExit activateExit;
 
-    private Renderer[] renderers;
     private bool pickupReceived = false;
-    private OpenDoor openDoor;
-    private Light[] lights;
+    private List<Light> lights;
+    private AudioSource audioSource;
 
     public int pickupIdx = 0;
-    private bool objectContained;
+    public int plinthIdx = 0;
 
     public bool GetPickupReceived()
     {
@@ -25,9 +27,21 @@ public class ReceivePickup : MonoBehaviour
 
     private void Awake()
     {
-        lights = FindObjectsByType<Light>(FindObjectsSortMode.None);
+        lights = new List<Light>();
+        audioSource = GetComponent<AudioSource>();
         //renderers = GetComponentsInChildren<Renderer>();
         //openDoor = FindFirstObjectByType<OpenDoor>();
+    }
+
+    private void Start()
+    {
+        foreach (Light light in FindObjectsByType<Light>(FindObjectsSortMode.None))
+        {
+            if (light.tag == "Lights")
+            {
+                lights.Add(light);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,7 +58,7 @@ public class ReceivePickup : MonoBehaviour
             //other.transform.SetParent(this.transform);
             other.transform.position = pickupAnchor.position;
             other.transform.rotation = pickupAnchor.rotation;
-            
+
             //other.gameObject.layer = LayerMask.NameToLayer("Default");
             // Iluminate
             /*other.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
@@ -52,7 +66,7 @@ public class ReceivePickup : MonoBehaviour
             {
                 r.material.EnableKeyword("_EMISSION");
             }*/
-            ExecutePickupFunction();
+            ExecutePickupFunction(other.gameObject);
             other.GetComponent<Pickup>().pickupPlaced = true;
             pickupReceived = true;
             //openDoor.CheckPickups();
@@ -68,74 +82,124 @@ public class ReceivePickup : MonoBehaviour
         if ((layerValue & pickupLayer) == layerValue && other.GetComponent<Pickup>().pickupIdx == pickupIdx)
         {
             pickupReceived = false;
-            TerminatePickupFunction();
+            TerminatePickupFunction(other.gameObject);
             other.GetComponent<Pickup>().pickupPlaced = false;
         }
     }
 
-    private void ExecutePickupFunction()
+    private void ExecutePickupFunction(GameObject orb)
+    {
+        bool playAnimation = plinthIdx != 1;
+        switch (this.pickupIdx)
+        {
+            case 0:
+                StartCoroutine(LightsOn(true,true));
+                break;
+            case 1:
+                StartCoroutine(LightsOn(false,playAnimation));
+                break;
+            case 2:
+                StartCoroutine(LightsOn(false, playAnimation));
+                break;
+            case 3:
+                StartCoroutine(LightsOn(false, playAnimation));
+                break;
+            default: break;
+        }
+        if (plinthIdx == 1) activateExit.ExitCondition(orb);
+    }
+
+    private void TerminatePickupFunction(GameObject orb)
     {
         switch (this.pickupIdx)
         {
             case 0:
-                StartCoroutine(LightsOn());
+                LightsOff(true);
+                break;
+            case 1:
+                LightsOff(false);
+                break;
+            case 2:
+                LightsOff(false);
+                break;
+            case 3:
+                LightsOff(false);
                 break;
             default: break;
         }
+        if (plinthIdx == 1) activateExit.VoidExitCondition(orb);
     }
 
-    private void TerminatePickupFunction()
+
+    private IEnumerator LightsOn(bool environmentLights, bool playAnimation)
     {
-        switch (this.pickupIdx)
+        float delayTime = 0.5f;
+        //Lights On
+        FX.SetActive(true);
+        foreach (Material mat in emissiveMaterials)
         {
-            case 0:
-                LightsOff();
-                break;
-            default: break;
+            mat.EnableKeyword("_EMISSION");
         }
-    }
-
-
-    private IEnumerator LightsOn()
-    {
-        float delayTime = 1f;
-        while (delayTime > 0f)
+        if (environmentLights)
         {
-            //Lights Off
-            foreach (Material mat in emissiveMaterials)
-            {
-                mat.DisableKeyword("_EMISSION");
-            }
-            foreach (Light light in lights)
-            {
-                light.enabled = false;
-            }
-            yield return new WaitForSeconds(delayTime);
-            //Lights On
-            foreach (Material mat in emissiveMaterials)
-            {
-                mat.EnableKeyword("_EMISSION");
-            }
             foreach (Light light in lights)
             {
                 light.enabled = true;
             }
-            yield return new WaitForSeconds(delayTime / 2f);
-            delayTime -= 0.25f;
-            Debug.Log("Delay Time: " + delayTime);
         }
+        audioSource.Play();
+        if (playAnimation)
+        {
+            yield return new WaitForSeconds(delayTime);
+            while (delayTime > 0f)
+            {
+                //Lights Off
+                LightsOff(environmentLights);
+                yield return new WaitForSeconds(delayTime);
+                //Lights On
+                FX.SetActive(true);
+                foreach (Material mat in emissiveMaterials)
+                {
+                    mat.EnableKeyword("_EMISSION");
+                }
+                if (environmentLights)
+                {
+                    foreach (Light light in lights)
+                    {
+                        light.enabled = true;
+                    }
+                }
+                audioSource.Play();
+                yield return new WaitForSeconds(delayTime / 2f);
+                if (delayTime > 0.1)
+                {
+                    delayTime -= 0.15f;
+                }
+                else
+                {
+                    delayTime -= 0.025f;
+                }
+                Debug.Log("Delay Time: " + delayTime);
+            }
+        }
+        yield return null;
     }
 
-    private void LightsOff()
+    private void LightsOff(bool environmentLights)
     {
         //Lights Off
+        FX.SetActive(false);
         foreach (Material mat in emissiveMaterials)
         {
             mat.DisableKeyword("_EMISSION");
         }
-        foreach (Light light in lights)
+        if (environmentLights)
         {
-            light.enabled = false;
+            foreach (Light light in lights)
+            {
+                light.enabled = false;
+            }
         }
+        audioSource.Stop();
     }
 }

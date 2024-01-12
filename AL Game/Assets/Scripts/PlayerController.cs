@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = true;
 
-            playFootstepAudio();
+            PlayFootstepAudio();
         }
     }
 
@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
         bool isGrounded = characterController.isGrounded;
         if (!wasGrounded && isGrounded)
         {
-            playFootstepAudio();
+            PlayFootstepAudio();
         }
         wasGrounded = isGrounded;
 
@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
 
             if(timeBetweenSteps >= currentStrideInterval)
             {
-                playFootstepAudio();
+                PlayFootstepAudio();
                 // Reset interval timer
                 timeBetweenSteps = 0f;
             }
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void playFootstepAudio()
+    private void PlayFootstepAudio()
     {
         // Pick random footstep audio clip
         int randomIndex = Random.Range(0, footstepAudio.Length - 1);
