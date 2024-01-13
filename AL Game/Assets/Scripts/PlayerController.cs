@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
         jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
         moveSpeedInAir *= moveSpeed;
         originalFootstepVolume = audioSource.volume;
+        if (canvasText == null) canvasText = FindObjectOfType<TMP_Text>();
         canvasText.text = "";
     }
 
@@ -110,10 +111,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        Debug.Log(hit.gameObject.tag);
         if(hit.gameObject.tag == "Enemy")
         {
             Debug.Log("Collided with enemy");
-            canvasText.text = "GAME OVERRRRRR";
+            canvasText.text = "GoT yOu";
             StartCoroutine(EndGameFunction());
         }
     }
