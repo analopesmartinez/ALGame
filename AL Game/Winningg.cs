@@ -9,6 +9,10 @@ public class Winningg : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+<<<<<<< HEAD:AL Game/Winningg.cs
+=======
+        Debug.Log("Triggered");
+>>>>>>> Oscar:AL Game/Assets/Scripts/LevelComplete.cs
         if (other.gameObject.tag == "Player")
         {
             Debug.Log("won");

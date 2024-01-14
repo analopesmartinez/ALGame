@@ -65,6 +65,11 @@ public class PlayerController : MonoBehaviour
         jumpVelocity = Mathf.Sqrt(-2.0f * Physics.gravity.y * jumpHeight);
         moveSpeedInAir *= moveSpeed;
         originalFootstepVolume = audioSource.volume;
+<<<<<<< HEAD
+=======
+        if (canvasText == null) canvasText = FindObjectOfType<TMP_Text>();
+        canvasText.text = "";
+>>>>>>> Oscar
     }
 
     private void FixedUpdate()
@@ -103,16 +108,17 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = true;
 
-            playFootstepAudio();
+            PlayFootstepAudio();
         }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        Debug.Log(hit.gameObject.tag);
         if(hit.gameObject.tag == "Enemy")
         {
             Debug.Log("Collided with enemy");
-            canvasText.text = "GAME OVERRRRRR";
+            canvasText.text = "GoT yOu";
             StartCoroutine(EndGameFunction());
         }
     }
@@ -170,7 +176,7 @@ public class PlayerController : MonoBehaviour
         bool isGrounded = characterController.isGrounded;
         if (!wasGrounded && isGrounded)
         {
-            playFootstepAudio();
+            PlayFootstepAudio();
         }
         wasGrounded = isGrounded;
 
@@ -182,7 +188,7 @@ public class PlayerController : MonoBehaviour
 
             if(timeBetweenSteps >= currentStrideInterval)
             {
-                playFootstepAudio();
+                PlayFootstepAudio();
                 // Reset interval timer
                 timeBetweenSteps = 0f;
             }
@@ -192,7 +198,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void playFootstepAudio()
+    private void PlayFootstepAudio()
     {
         // Pick random footstep audio clip
         int randomIndex = Random.Range(0, footstepAudio.Length - 1);

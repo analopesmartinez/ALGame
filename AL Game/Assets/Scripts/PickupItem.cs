@@ -27,12 +27,13 @@ public class PickupItem : MonoBehaviour
             }
             hit.transform.SetParent(_camera.transform);
             itemPickedUp = hit.transform.gameObject;
+            itemPickedUp.GetComponent<Pickup>().pickupPlaced = false;
         }
     }
 
     private void OnRelease()
     {
-        if (itemPickedUp != null)
+        if (itemPickedUp != null && itemPickedUp.GetComponent<Pickup>().pickupPlaced != true)
         {
             Rigidbody _rigidbody = itemPickedUp.GetComponent<Rigidbody>();
             if (_rigidbody != null)

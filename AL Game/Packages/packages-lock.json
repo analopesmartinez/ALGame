@@ -1,7 +1,11 @@
 {
   "dependencies": {
     "com.unity.ai.navigation": {
+<<<<<<< HEAD
       "version": "1.1.4",
+=======
+      "version": "1.1.5",
+>>>>>>> Oscar
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -9,9 +13,15 @@
       },
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.collab-proxy": {
       "version": "2.1.0",
       "depth": 0,
+=======
+    "com.unity.ext.nunit": {
+      "version": "2.0.3",
+      "depth": 2,
+>>>>>>> Oscar
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -70,6 +80,7 @@
       },
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.performance.profile-analyzer": {
       "version": "1.2.2",
       "depth": 1,
@@ -82,6 +93,15 @@
       "depth": 2,
       "source": "registry",
       "dependencies": {},
+=======
+    "com.unity.postprocessing": {
+      "version": "3.3.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      },
+>>>>>>> Oscar
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {

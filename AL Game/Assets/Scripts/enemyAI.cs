@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+//using NUnit.Framework;
+>>>>>>> Oscar
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -232,4 +236,12 @@ public class EnemyAI : MonoBehaviour
 			previousDirection = direction.normalized;
 		}
 	}
+<<<<<<< HEAD
+=======
+
+	public void SetPatrolPoints(Transform[] newPatrolPoints)
+	{
+		patrolPoints = newPatrolPoints;
+	}
+>>>>>>> Oscar
 }
