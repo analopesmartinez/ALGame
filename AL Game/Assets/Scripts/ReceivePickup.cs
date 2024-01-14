@@ -42,6 +42,10 @@ public class ReceivePickup : MonoBehaviour
                 lights.Add(light);
             }
         }
+        foreach (Material mat in emissiveMaterials)
+        {
+            mat.DisableKeyword("_EMISSION");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -93,10 +97,10 @@ public class ReceivePickup : MonoBehaviour
         switch (this.pickupIdx)
         {
             case 0:
-                StartCoroutine(LightsOn(true,true));
+                StartCoroutine(LightsOn(true, true));
                 break;
             case 1:
-                StartCoroutine(LightsOn(false,playAnimation));
+                StartCoroutine(LightsOn(false, playAnimation));
                 break;
             case 2:
                 StartCoroutine(LightsOn(false, playAnimation));

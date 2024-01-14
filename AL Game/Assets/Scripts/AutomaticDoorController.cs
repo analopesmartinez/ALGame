@@ -32,17 +32,18 @@ public class AutomaticDoorController : MonoBehaviour
             {
                 SetDoorVisibility(true);
 
-                doorOpen = false;
-            }
 
-            topRight.transform.localPosition -= Vector3.right * doorSpeed * Time.deltaTime;
-            bottomLeft.transform.localPosition += Vector3.right * doorSpeed * Time.deltaTime;
-            topLeft.transform.localPosition -= Vector3.up * doorSpeed * Time.deltaTime;
-            bottomRight.transform.localPosition += Vector3.up * doorSpeed * Time.deltaTime;
 
-            if (topRight.transform.localPosition.x <= 1.5)
-            {
-                doorClosing = false;
+                topRight.transform.localPosition -= Vector3.right * doorSpeed * Time.deltaTime;
+                bottomLeft.transform.localPosition += Vector3.right * doorSpeed * Time.deltaTime;
+                topLeft.transform.localPosition -= Vector3.up * doorSpeed * Time.deltaTime;
+                bottomRight.transform.localPosition += Vector3.up * doorSpeed * Time.deltaTime;
+
+                if (topRight.transform.localPosition.x <= 1.5)
+                {
+                    doorClosing = false;
+                    doorOpen = false;
+                }
             }
 
         }
@@ -50,13 +51,15 @@ public class AutomaticDoorController : MonoBehaviour
 
     private void OpenDoor()
     {
-        if(!doorOpen && doorOpening)
+        if(doorOpening)
         {
-            topRight.transform.localPosition += Vector3.right * doorSpeed * Time.deltaTime;
-            bottomLeft.transform.localPosition -= Vector3.right * doorSpeed * Time.deltaTime;
-            topLeft.transform.localPosition += Vector3.up * doorSpeed * Time.deltaTime;
-            bottomRight.transform.localPosition -= Vector3.up * doorSpeed * Time.deltaTime;
-
+            if (!doorOpen)
+            {
+                topRight.transform.localPosition += Vector3.right * doorSpeed * Time.deltaTime;
+                bottomLeft.transform.localPosition -= Vector3.right * doorSpeed * Time.deltaTime;
+                topLeft.transform.localPosition += Vector3.up * doorSpeed * Time.deltaTime;
+                bottomRight.transform.localPosition -= Vector3.up * doorSpeed * Time.deltaTime;
+            }
 
             if (topRight.transform.localPosition.x >= 4)
             {
@@ -78,6 +81,11 @@ public class AutomaticDoorController : MonoBehaviour
     {
         Debug.Log("Door closing activated");
         doorClosing = true;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        doorOpening = true;
     }
 
     private void SetDoorVisibility(bool visible)
