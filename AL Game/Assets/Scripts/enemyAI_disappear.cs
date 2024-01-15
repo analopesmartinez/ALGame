@@ -36,8 +36,9 @@ public class EnemyAI_disappear : MonoBehaviour
 		}
 
 		animator = GetComponent<Animator>();
+        playerTransform = FindObjectOfType<CharacterController>().transform;
 
-	}
+    }
 
 	private void Update()
 	{

@@ -2612,7 +2612,7 @@ MonoBehaviour:
   chaseSpeed: 5
   patrolSpeed: 2
   chaseDuration: 10
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 8138068441869845605, guid: 3d862a21da4b27d4f9e2d089ca455073, type: 3}
   viewAngle: 110
   viewRadius: 15
 --- !u!95 &7114486843438920775

@@ -39,6 +39,7 @@ public class EnemyAI_freeze : MonoBehaviour
 		currentPatrolIndex = 0;
 		MoveToNextPatrolPoint();
 		animator = GetComponent<Animator>();
+		playerTransform = FindObjectOfType<CharacterController>().transform;
 	}
 
 	private void Update()

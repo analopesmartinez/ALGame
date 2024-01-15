@@ -4354,7 +4354,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   frontViewAngle: 110
-  frontViewRadius: 40
+  frontViewRadius: 20
   backViewAngle: 110
   backViewRadius: 8
   targetMask:
@@ -4363,7 +4363,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 8
-  chaseSpeed: 10
+  chaseSpeed: 7
   patrolSpeed: 3.5
   chaseDuration: 5
 --- !u!95 &8141313681019732960

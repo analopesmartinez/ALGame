@@ -116,8 +116,11 @@ public class ShipCreator : MonoBehaviour
                     enemy.GetComponent<EnemyAI_freeze>().patrolPoints = patrolPoints;
                     break;
                 case 2:
+                    enemy.GetComponent<EnemyAI>().patrolPoints = patrolPoints;
                     break;
-                default: break;
+                default:
+                    enemy.GetComponent<EnemyAI_disappear>().patrolPoints = patrolPoints;
+                    break;
             }
             enemyType++;
             if (enemyType >= enemyPrefab.Length) enemyType = 0;

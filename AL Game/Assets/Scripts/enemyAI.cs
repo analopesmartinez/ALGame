@@ -36,7 +36,8 @@ public class EnemyAI : MonoBehaviour
 		currentPatrolIndex = 0;
 		MoveToNextPatrolPoint();
 		animator = GetComponent<Animator>();
-	}
+        playerTransform = FindObjectOfType<CharacterController>().transform;
+    }
 
 	private void Update()
 	{
