@@ -35,6 +35,7 @@ public class EnemyAI : MonoBehaviour
 		agent = GetComponent<NavMeshAgent>();
 		currentPatrolIndex = 0;
 		MoveToNextPatrolPoint();
+		animator = GetComponent<Animator>();
 	}
 
 	private void Update()
@@ -64,8 +65,10 @@ public class EnemyAI : MonoBehaviour
 			// Regular patrol behavior
 			Patrol();
 		}
+
 		float speed = agent.velocity.magnitude; // Get the speed from the NavMeshAgent
 		animator.SetFloat("Speed", speed); // Set the Speed parameter in the Animator
+		Debug.Log("Current speed: " + speed);
 	}
 
 	void Patrol()
