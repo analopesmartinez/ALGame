@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour
 
 	private bool isChasing;
 	private Transform playerTransform;
+	private Animator animator;
 
 	private void Start()
 	{
@@ -63,6 +64,8 @@ public class EnemyAI : MonoBehaviour
 			// Regular patrol behavior
 			Patrol();
 		}
+		float speed = agent.velocity.magnitude; // Get the speed from the NavMeshAgent
+		animator.SetFloat("Speed", speed); // Set the Speed parameter in the Animator
 	}
 
 	void Patrol()
