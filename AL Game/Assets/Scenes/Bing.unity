@@ -2498,6 +2498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: enemy_patrol
       objectReference: {fileID: 0}
+    - target: {fileID: 8662399785684556576, guid: a6ae6b71ba18dbe4abd5f649fe520a33, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2612,6 +2616,22 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 177962037}
+    - target: {fileID: 45274269632532090, guid: 85b1072b75ddc6c48bf46699d7d662d6, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 8209090430909287498}
+    - target: {fileID: 1831703422196124749, guid: 85b1072b75ddc6c48bf46699d7d662d6, type: 3}
+      propertyPath: m_Size.y
+      value: 1.6182284
+      objectReference: {fileID: 0}
+    - target: {fileID: 1831703422196124749, guid: 85b1072b75ddc6c48bf46699d7d662d6, type: 3}
+      propertyPath: m_Center.y
+      value: 0.30911422
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344852366262565109, guid: 85b1072b75ddc6c48bf46699d7d662d6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8270350373881519640, guid: 85b1072b75ddc6c48bf46699d7d662d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.85
@@ -2658,7 +2678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8371551540872011497, guid: 85b1072b75ddc6c48bf46699d7d662d6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2713,6 +2733,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: enemy_freeze
       objectReference: {fileID: 0}
+    - target: {fileID: 7003997135456801599, guid: fe387ba8171e1ee42a5668960b111a9f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8338009804043509212, guid: fe387ba8171e1ee42a5668960b111a9f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.78
@@ -2758,6 +2782,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe387ba8171e1ee42a5668960b111a9f, type: 3}
+--- !u!95 &8209090430909287498 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1433059325498811784, guid: 85b1072b75ddc6c48bf46699d7d662d6, type: 3}
+  m_PrefabInstance: {fileID: 7464207693051755122}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8672529968560348091
 PrefabInstance:
   m_ObjectHideFlags: 0
