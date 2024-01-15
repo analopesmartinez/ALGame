@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,7 +26,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float sprintStrideInterval = 0.3f;
 
     [Header("Game Over")]
-    [SerializeField] private TMP_Text canvasText; 
+    [SerializeField] private TMP_Text canvasText;
+    [SerializeField] private GameObject blackoutSquare;
+    [SerializeField] private float fadeSpeed;
 
     private Vector2 moveVector;
     private Vector2 lookVector;
@@ -66,7 +69,8 @@ public class PlayerController : MonoBehaviour
         moveSpeedInAir *= moveSpeed;
         originalFootstepVolume = audioSource.volume;
         if (canvasText == null) canvasText = FindObjectOfType<TMP_Text>();
-        canvasText.text = "";
+        if(canvasText.text != "YOU ESCAPED") canvasText.text = "";
+        if (blackoutSquare == null) blackoutSquare = GameObject.FindGameObjectsWithTag("Blackout")[0];
     }
 
     private void FixedUpdate()
@@ -115,7 +119,6 @@ public class PlayerController : MonoBehaviour
         if(hit.gameObject.tag == "Enemy")
         {
             Debug.Log("Collided with enemy");
-            canvasText.text = "GoT yOu";
             StartCoroutine(EndGameFunction());
         }
     }
@@ -207,7 +210,17 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator EndGameFunction()
     {
-        yield return new WaitForSeconds(3f);
+        canvasText.text = "GoT yOu";
+        Color objectColour = blackoutSquare.GetComponent<Image>().color;
+        float fadeAmount;
+        while(blackoutSquare.GetComponent<Image>().color.a < 1)
+        {
+            fadeAmount = objectColour.a + (fadeSpeed * Time.deltaTime);
+
+            objectColour = new Color(objectColour.r, objectColour.g, objectColour.g, fadeAmount);
+            blackoutSquare.GetComponent<Image>().color = objectColour;
+            yield return null;
+        }
         SceneManager.LoadScene("Level 0");
     }
 }

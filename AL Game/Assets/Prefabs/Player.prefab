@@ -367,6 +367,8 @@ MonoBehaviour:
   strideInterval: 0.6
   sprintStrideInterval: 0.8
   canvasText: {fileID: 0}
+  blackoutSquare: {fileID: 0}
+  fadeSpeed: 1
 --- !u!82 &4245787324243526106
 AudioSource:
   m_ObjectHideFlags: 0
