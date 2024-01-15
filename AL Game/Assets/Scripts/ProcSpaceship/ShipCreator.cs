@@ -19,7 +19,7 @@ public class ShipCreator : MonoBehaviour
     // [SerializeField] Material material3;
     [SerializeField] GameObject wallHorizontal, wallVertical, doorPrefab, lightPrefab;
     [SerializeField] NavMeshSurface _navMeshSurface;
-    [SerializeField] GameObject playerPrefab; 
+    [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject[] enemyPrefab;
     [SerializeField] int enemyCount;
     [SerializeField] GameObject[] premadeRooms;
@@ -107,9 +107,20 @@ public class ShipCreator : MonoBehaviour
             Node room = listOfRooms[Random.Range(0, listOfRooms.Count)];
             Vector2 spawnLocation = (Vector2)(room.BottomLeftCorner + room.TopRightCorner) / 2.0f;
             GameObject enemy = Instantiate(enemyPrefab[enemyType], new Vector3(spawnLocation.x, 0.5f, spawnLocation.y), Quaternion.identity, parent.transform);
-            enemy.GetComponent<EnemyAI>().SetPatrolPoints(patrolPoints);
+            switch (enemyType)
+            {
+                case 0:
+                    enemy.GetComponent<EnemyAI_disappear>().patrolPoints = patrolPoints;
+                    break;
+                case 1:
+                    enemy.GetComponent<EnemyAI_freeze>().patrolPoints = patrolPoints;
+                    break;
+                case 2:
+                    break;
+                default: break;
+            }
             enemyType++;
-            if(enemyType >= enemyPrefab.Length) enemyType = 0;
+            if (enemyType >= enemyPrefab.Length) enemyType = 0;
         }
     }
 
